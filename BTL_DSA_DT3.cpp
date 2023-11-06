@@ -1,6 +1,3 @@
-
-// Thêm mới sinh viên vào danh sách - Tìm kiếm sinh viên trên danh sách (Nhập mã sinh viên từ bàn phím) - 
-
 #include <bits/stdc++.h>
 
 using namespace std;
