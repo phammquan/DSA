@@ -25,15 +25,17 @@ class SINHVIEN {
             cin >> GPA;
             cin.ignore();
             if (GPA > 3.6){
-                XL = "Xuat sac";
-            } else if (GPA > 3.2 && GPA < 3.59) {
-                XL = "Gioi";
-            } else if (GPA > 2.2 && GPA < 3.19) {
-                XL = "Kha";
-            } else {
-                XL = "Thi lai";
+                XL = "xuat sac";
+            }else if (GPA > 3.2 && GPA < 3.59){
+                XL = "gioi";
+            }else if (GPA > 2.5 && GPA < 3.19){
+                XL = "kha";
+            }else if (GPA > 2.0 && GPA < 2.49){
+                XL = "trung binh";
+            }else{
+                XL = "thi lai";
             }
-        }            
+        }                  
 
 };
 
@@ -136,6 +138,13 @@ void in_dau(){
     cout << endl;
 }
 
+void dong(){
+    for(int i=0; i<(10+20+18+20+10+6); i++){
+        cout << "-";
+    }
+    cout << endl;
+}
+
 void inds (node *head){
     for(int i=0; i<(10+20+18+20+10+6); i++){
         cout << "-";
@@ -203,84 +212,46 @@ void suaSV(node* head, string MSV) {
     cout << "Khong tim thay sinh vien co ma " << MSV << "." << endl;
 }
 
-
-void inXS (node *head){
+void inXl (node *head, string dk){
+    std::map<std::string, std::string> rutgon;
+    rutgon["XS"] = "xuat sac"; rutgon["G"] = "gioi"; rutgon["K"] = "kha"; rutgon["TL"] = "thi lai"; rutgon["TB"] = "trung binh";
     int dem=0;
-    cout<<endl<<"Danh sach sinh vien xuat sac: "<<endl;
+    cout<<endl<<"Danh sach sinh vien thuoc loai "<<rutgon[dk]<<endl;
     in_dau();
     while(head != NULL){
-        if (head->data.XL == "Xuat sac"){
+        if (head->data.XL == rutgon[dk]){
             in(head->data);
             dem++;
         }
         head = head->next;
     }
     if(dem==0){
-        cout<<"Khong co sinh vien nao xep loai xuat sac"<<endl;
+        cout<<"|"<<"Khong co sinh vien nao thuoc loai nay "<<setw(44)<<"|"<<endl;
+        dong();
     }
 }
 
-void inG (node *head){
-    int dem=0;
-    cout<<endl<<"Danh sach sinh vien gioi: "<<endl ;
-    in_dau();
-    while(head != NULL){
-        if (head->data.XL == "Gioi"){
-            in(head->data);
-            dem++;
-        }
-        head = head->next;
-    }
-    if(dem==0){ 
-        cout<<"Khong co sinh vien nao xep loai gioi"<<endl;
+void inallXL(node *head){
+    string dk[]={"XS", "G", "K", "TB", "TL"};
+    for (int i=0; i<5; i++){
+        inXl(head, dk[i]);
     }
 }
 
-void inK (node *head){
+void timTT(node *head, string dc){
     int dem=0;
-    cout<<endl<<"Danh sach sinh vien kha: "<<endl ;
+    cout << "Danh sach sinh vien co thong tin "<<dc<< ": "<<endl;
     in_dau();
     while(head != NULL){
-        if (head->data.XL == "Kha"){
-            in(head->data);
-            dem++;
-        }
-        head = head->next;
-    }
-    if(dem==0){
-        cout<<"Khong co sinh vien nao xep loai kha"<<endl;
-    }
-}
-
-void inTB (node *head){
-    int dem=0;
-    cout<<endl<<"Danh sach sinh vien Thi lai: "<<endl ;
-    in_dau();
-    while(head != NULL){
-        if (head->data.XL == "Thi lai"){
-            in(head->data);
-            dem++;
-        }
-        head = head->next;
-    }
-    if(dem==0){
-        cout<<"Khong co sinh vien nao Thi lai"<<endl;
-    }
-}
-
-void timDC(node *head, string dc){
-    int dem=0;
-    cout << "Danh sach sinh vien o dia chi "<<dc<< ": "<< endl;
-    in_dau();
-    while(head != NULL){
-        if(head->data.address==dc) {
+        if(head->data.address==dc||head->data.name==dc||head->data.date==dc) {
             in(head->data);
             dem++;
         }
         head = head->next;
     }
     if (dem==0){
-        cout<<"Khong co sinh vien nao thuoc dia chi nay"<<endl;
+        cout<<"|"<<"Khong co sinh vien nao co thong tin nay"<<setw(44)<<"|"<<endl;
+        dong();
     }
 }
 
@@ -296,18 +267,19 @@ void timdiem(node *head, double d){
         head = head->next;
     }
     if (dem==0){
-        cout<<"Khong co sinh vien dat GPA nay"<<endl;
+        cout<<"|"<<"Khong co sinh vien dat GPA nay"<<setw(44)<<"|"<<endl;
+        dong();
     }
 }
 
 int main(){
     node *head = NULL;
-    string msv, XN, dc;
+    string msv, dk, dc;
     double d;
     node* sinh_vien_tim_duoc;
      
     cout << "Nhap vao so sinh vien: " ;
-    int n,choN; cin >> n;
+    int n,choN,XN; cin >> n;
     cin.ignore();
     for(int i=0; i<n; i++){
         SINHVIEN sv;
@@ -378,42 +350,40 @@ int main(){
                 break;
 
             case 4:
-                    cout<<endl<<"ban muon loc thong tin nao: ";
-                    cout<<endl<<" ***************************GPA: Loc theo GPA";
-                    cout<<endl<<" ****************************DC: Loc theo dia chi";
-                    cout<<endl<<" ****************************XS: Xuat sac ";
-                    cout<<endl<<" *****************************G: Gioi ";
-                    cout<<endl<<" *****************************K: Kha ";
-                    cout<<endl<<" ****************************TL: Thi lai ";
-                    cout<<endl<<" ***************************ALL: Tat ca xep loai ";
-                    cout<<endl<<"lua chon cua ban: ";cin>>XN;
-                    if(XN == "GPA"){
+                cout<<endl<<"ban muon loc thong tin nao: ";
+                cout<<endl<<" ****************************[1]: Loc theo GPA";
+                cout<<endl<<" ****************************[2]: Loc theo thong tin ca nhan";
+                cout<<endl<<" ****************************[3]: loc theo xep loai ";
+                cout<<endl<<"lua chon cua ban: ";cin>>XN;
+                switch (XN){
+                    case 1:
                         cout<<"nhap GPA: ";cin>>d;
                         timdiem(head,d);
-                    }        
-                    if(XN == "DC"){
-                        cout<<"nhap ten dia chi: ";cin.ignore();getline(cin, dc);
-                        timDC(head,dc);
+                        break;
+                    case 2:       
+                        cout<<"nhap thong tin ban muon loc(ho ten, dia chi): ";cin.ignore();getline(cin, dk);
+                        timTT(head,dk);
+                        break;
+                    case 3:
+                        cout<<endl<<" ****************************XS: loc sinh vien xep loai xuat sac ";
+                        cout<<endl<<" *****************************G: loc sinh vien xep loai gioi ";
+                        cout<<endl<<" *****************************K: loc sinh vien xep loai kha ";
+                        cout<<endl<<" ****************************TB: loc sinh vien xep loai trung binh ";
+                        cout<<endl<<" ****************************TL: loc sinh vien thi lai ";
+                        cout<<endl<<" ***************************ALL: loc tat ca sinh vien theo xep loai";
+                        cout<<endl<<"lua chon cua ban: ";cin>>dk;
+                    if (dk == "ALL"){
+                        inallXL(head);
                     }
-                    if (XN == "XS"){
-                        inXS(head);
+                    else if (dk=="XS"||dk=="G"||dk=="K"||dk=="TB"||dk =="TL"){
+                        inXl(head,dk);
                     }
-                    else if (XN == "G"){
-                        inG(head);
+                    else{
+                        cout<<"dieu kien khong phu hop ";                            
                     }
-                    else if (XN == "K"){
-                        inK(head);
+                    break;
                     }
-                    else if (XN == "TL"){
-                        inTB(head);
-                    }
-                    else if (XN == "ALL"){
-                        inXS(head);
-                        inG(head);
-                        inK(head);
-                        inTB(head);
-                    }
-                break;
+                    break;
             case 5:
                     cout << endl << "Danh sach sinh vien cuoi : "  << endl;
                     inds(head);
